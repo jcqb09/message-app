@@ -4,6 +4,7 @@ import axios from "axios";
 import { Card } from "@mui/material";
 function App() {
   const [info, setInfo] = useState([]);
+  const [edit, setEdit] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:9000/ex/info")
@@ -13,14 +14,6 @@ function App() {
   }, []);
 
   //  console.log(info);
-
-  const getInput = () => {
-    const ref1 = document.getElementById("user").value;
-    const ref2 = document.getElementById("post").value;
-
-    console.log(ref1);
-    console.log(ref2);
-  };
 
   const post = () => {
     const ref1 = document.getElementById("user").value;
@@ -41,9 +34,19 @@ function App() {
     axios.delete("http://localhost:9000/ex/info/" + x);
   };
 
+  const change = (i) => {
+    const ref3 = document.getElementById("edit").value;
+    console.log(ref3);
+    axios.put("http://localhost:9000/ex/edit/" + i, {
+      post: { ref3 },
+    });
+
+    setEdit(false);
+    return;
+  };
+
   return (
     <>
-      <div className="App">Hello World</div>
       <div className="input" style={{ textAlign: "center" }}>
         <div>
           <p>Username: </p>
@@ -58,7 +61,6 @@ function App() {
           type="submit"
           value="Post"
           onClick={() => {
-            getInput();
             post();
           }}
         />
@@ -89,9 +91,23 @@ function App() {
                     textAlign: "center",
                     margin: "20px",
                   }}
+                  onClick={() => setEdit(true)}
                 >
                   EDIT
                 </button>
+              </div>
+              <div className="editbox" style={{ textAlign: "center" }}>
+                {edit && (
+                  <Card>
+                    <p>Enter new post: </p>
+                    <input type="text" id="edit" name="edit" />{" "}
+                    <input
+                      type="submit"
+                      value="Submit"
+                      onClick={() => change(doc.id)}
+                    />
+                  </Card>
+                )}
               </div>
             </Card>
           ))}

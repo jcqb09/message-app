@@ -11,6 +11,7 @@ const {
   doc,
   addDoc,
   deleteDoc,
+  updateDoc,
 } = require("firebase/firestore");
 
 router.get("/info", async (req, res, next) => {
@@ -39,9 +40,12 @@ router.delete("/info/:id", async (req, res, next) => {
   const del = await deleteDoc(doc(db, "messages", req.params.id));
 });
 
-// router.delete("/delete", async (req, res, next) => {
-//   console.log(req);
-//   const del = await deleteDoc(doc(db, "messages", req.body));
-// });
+router.put("/edit/:id", async (req, res, next) => {
+  console.log(req.params);
+  console.log(req.body);
+  const change = await updateDoc(doc(db, "messages", req.params.id), {
+    post: req.body.post.ref3,
+  });
+});
 
 module.exports = router;
