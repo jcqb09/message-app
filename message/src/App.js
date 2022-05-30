@@ -12,7 +12,7 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  console.log(info);
+  //  console.log(info);
 
   const getInput = () => {
     const ref1 = document.getElementById("user").value;
@@ -37,6 +37,10 @@ function App() {
       .catch((err) => console.log(err));
   };
 
+  const remove = (x) => {
+    axios.delete("http://localhost:9000/ex/info/" + x);
+  };
+
   return (
     <>
       <div className="App">Hello World</div>
@@ -55,15 +59,40 @@ function App() {
           value="Post"
           onClick={() => {
             getInput();
+            post();
           }}
         />
       </div>
       <div className="feed">
         {info &&
           info.map((doc) => (
-            <Card style={{ height: "100px" }}>
-              <p style={{ textAlign: "center" }}>{doc.user}</p>
-              <p style={{ textAlign: "center" }}>{doc.post}</p>
+            <Card key={doc.id}>
+              <p style={{ textAlign: "center" }}>{doc.data.user}</p>
+              <p style={{ textAlign: "center" }}>{doc.data.post}</p>
+              <div style={{ textAlign: "center" }}>
+                <button
+                  style={{
+                    borderColor: "red",
+                    textAlign: "center",
+                    margin: "20px",
+                  }}
+                  onClick={() => {
+                    console.log(doc.id);
+                    remove(doc.id);
+                  }}
+                >
+                  DELETE
+                </button>
+                <button
+                  style={{
+                    borderColor: "gold",
+                    textAlign: "center",
+                    margin: "20px",
+                  }}
+                >
+                  EDIT
+                </button>
+              </div>
             </Card>
           ))}
       </div>
